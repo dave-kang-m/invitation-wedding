@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Favicon Generator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+    canvas {
+      border: 1px solid #ddd;
+    }
+    .controls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #e9c3c3;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <canvas id="favicon" width="64" height="64"></canvas>
+    <div class="controls">
+      <button id="downloadPNG">PNG 다운로드</button>
+      <button id="downloadICO">ICO 다운로드</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('favicon');
+    const ctx = canvas.getContext('2d');
+    
+    // 배경 색상 설정
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, 64, 64);
+    
+    // 두 개의 하트 그리기
+    function drawHeart(x, y, size, color) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x, y + size / 4);
+      ctx.bezierCurveTo(
+        x, y, 
+        x - size / 2, y, 
+        x - size / 2, y + size / 4
+      );
+      ctx.bezierCurveTo(
+        x - size / 2, y + size / 2, 
+        x, y + size * 3/4, 
+        x, y + size
+      );
+      ctx.bezierCurveTo(
+        x, y + size * 3/4, 
+        x + size / 2, y + size / 2, 
+        x + size / 2, y + size / 4
+      );
+      ctx.bezierCurveTo(
+        x + size / 2, y, 
+        x, y, 
+        x, y + size / 4
+      );
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.restore();
+    }
+    
+    // 첫 번째 하트 (약간 왼쪽)
+    drawHeart(28, 18, 24, '#e98a8a');
+    
+    // 두 번째 하트 (약간 오른쪽, 겹치도록)
+    drawHeart(36, 18, 24, '#8a9ce9');
+    
+    // 이니셜 그리기
+    ctx.font = 'bold 16px Arial';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('W', 32, 32);
+    
+    // PNG 다운로드
+    document.getElementById('downloadPNG').addEventListener('click', function() {
+      const link = document.createElement('a');
+      link.download = 'favicon.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+    
+    // ICO 다운로드 (브라우저에서는 실제 ICO 변환이 어려우므로 PNG로 대체)
+    document.getElementById('downloadICO').addEventListener('click', function() {
+      const link = document.createElement('a');
+      link.download = 'favicon.ico';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      alert('브라우저에서는 직접 ICO 형식으로 변환할 수 없습니다. 다운로드된 PNG 파일을 ICO 변환 도구를 사용하여 변환해주세요.');
+    });
+  </script>
+</body>
+</html> 
